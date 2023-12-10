@@ -23,7 +23,7 @@ router.post('/check', function (req,res){
             res.redirect('/user/login');
         }
     }).catch(()=>{
-        req.flash('error','message');
+        req.flash('error','Nespravne heslo alebo login');
         res.redirect('/user/login')
     })
 });
