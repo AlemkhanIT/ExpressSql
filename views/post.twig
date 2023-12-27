@@ -4,7 +4,7 @@
     <div class="container mt-5 mb-10">
         {% if user.admin %}
         <div class="row">
-            <form action="" class="col">
+            <form action="/post/update/{{ post.id }}" class="col">
                 <article>
                     <header class="mb-4">
                         <h1 class="fw-bolder mb-1">Title</h1>
@@ -44,6 +44,8 @@
                         <div class="card-body"><textarea class="form-control" rows="5" type="text" name="description">{{ post.description }}</textarea></div>
                     </div>
                 </div>
+                <button type="submit" class="btn btn-success pb-10 w-100 fs-3">Update</button>
+                <a href="/post/delete/{{ post.id }}" class="btn btn-lg btn-danger btn-error pb-10 w-100 fs-3">Delete</a>
             </form>
 
             {% else %}
@@ -88,7 +90,7 @@
                 <div class="card bg-light">
                     <div class="card-body">
                         <!-- Comment form-->
-                        <form action="/post/comment" method="post" class="mb-4"><textarea name="comment_text" class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                        <form action="/post/comment/{{ post.id }}" method="post" class="mb-4"><textarea name="comment_text" class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
                             <button type="submit" class="btn btn-lg btn-block btn-success rounded-0  my-3 bg-op-6 roboto-bold">Send</button></form>
                         <!-- Comment with nested comments-->
                         {% for comment in comments %}
@@ -99,7 +101,7 @@
                                     {{ comment.comment_text }}
                                 </div>
                                 {% if user.admin %}
-                                    <a class="btn btn-lg btn-danger btn-error rounded-5 mb-3 bg-op-6 roboto-bold" href="/post/delete/{{ comment.id }}" class="btn-warning">Delete</a>
+                                    <a class="btn btn-lg btn-danger btn-error rounded-5 mb-3 bg-op-6 roboto-bold" href="/post/{{ post.id }}/deleteComment/{{ comment.cId }}" class="btn-warning">Delete</a>
                                 {% endif %}
                             </div>
                         {% endfor %}

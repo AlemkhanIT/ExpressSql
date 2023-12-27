@@ -2,67 +2,51 @@
 
 {% block content %}
     <div class="container mt-5 mb-10">
+        {% if user.admin %}
         <div class="row">
-            <div class="col-lg-8">
+            <form action="/post/add" method="post" class="col">
                 <article>
                     <header class="mb-4">
-                        <input type="text">
-                        <input type="text">
-                        <input type="text">
+                        <h1 class="fw-bolder mb-1">Title</h1>
+                        <input class="fs-1 form-control" type="text" name="title" value="">
+                        <p class="fs-5 mb-4">Type</p>
+                        <input class="fs-5 form-control" type="text" name="type" value="">
                     </header>
 
                     <!-- Post content-->
                     <section class="mb-5">
-                        <p class="fs-5 mb-4 overflow-wrap-break-word">{{ post.text }}</p>
+                        <p class="fs-5 mb-4 ">Text:</p>
+                        <textarea class="form-control" rows="8" type="text" name="text"></textarea>
                     </section>
                 </article>
-                <!-- Comments section-->
-                <section class="mb-10">
-                    <div class="card bg-light">
+                <div class="d-flex justify-content-between gap-1">
+                    <div class="card mb-4 w-50">
+                        <div class="card-header">Place</div>
                         <div class="card-body">
-                            <!-- Comment form-->
-                            <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
-                                <button class="btn btn-lg btn-block btn-success rounded-0  my-3 bg-op-6 roboto-bold">Send</button></form>
-                            <!-- Comment with nested comments-->
-                            {% for comment in comments %}
-                            <div class="d-flex mb-4">
-                                <!-- Parent comment-->
-
-
-                                <div class="ms-3">
-                                    <div class="fw-bold">{{ comment.commenter_name }}</div>
-                                    {{ comment.comment_text }}
+                            <div class="row">
+                                <div class="col">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>Mesto: <select name="region_id" class="form-select" aria-label="Default select example">
+                                                {% for region in regions %}
+                                                    <option value="{{ region.id }}">{{ region.city }}</option>
+                                                {% endfor %}
+                                            </select></li>
+                                        <li>Adresa: <input class="form-control" type="text" name="address" value=""></li>
+                                        <li>Datum Konania: <input class="form-control" type="date" name="date_konania" value=""></li>
+                                    </ul>
                                 </div>
-
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <!-- Side widgets-->
-            <div class="col-lg-4">
-                <!-- Categories widget-->
-                <div class="card mb-4">
-                    <div class="card-header">Place</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <ul class="list-unstyled mb-0">
-                                    <li>Mesto: {{ post.city }}</li>
-                                    <li>Adresa: {{ post.address }}</li>
-                                    <li>Datum Konania: {{ post.formatted_date }}</li>
-                                </ul>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card mb-4">
-                    <div class="card-header">Description</div>
-                    <div class="card-body">{{post.description}}</div>
+                    <div class="card mb-4 w-50">
+                        <div class="card-header">Description</div>
+                        <div class="card-body"><textarea class="form-control" rows="5" type="text" name="description"></textarea></div>
+                    </div>
                 </div>
-            </div>
+                <button type="submit" class="btn btn-success pb-10 w-100 fs-4">Create</button>
+            </form>
         </div>
+        {% endif %}
     </div>
 {% endblock %}

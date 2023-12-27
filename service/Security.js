@@ -10,7 +10,7 @@ function authorize() {
             if (user.admin) {
                 next();
             } else {
-                req.flash('error', `Pre prístup je vyžadovaná rola ${rolesString}!`);
+                req.flash('error', `Pre prístup je vyžadovaná rola Admin!`);
                 res.redirect('/');
             }
         } else {
