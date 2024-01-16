@@ -20,16 +20,28 @@ function authorize() {
     }
 }
 
+function authorizeUser() {
+    return (req, res, next) => {
+        const user = req.session.user;
+        if (user) {
+            next();
+        } else {
+            req.flash('error', 'Prístup len pre prihlásených používateľov!');
+            res.redirect('/');
+        }
+    }
+}
+
 
 function hashPassword(password) {
     // pripojit pred heslo retazec SALT, vypocitat hash algoritmom sha256 a skonvertovat ho na hex retazec.
     return sha256(process.env.PWD_SALT + password).toString(hex);
 }
 
-async function setUserPassword(username, password) {
-    await Db.query('UPDATE users SET password = :pwd WHERE login = :username', {
+async function setUserPassword(id, password) {
+    await Db.query('UPDATE users SET password = :pwd WHERE id = :id', {
         pwd: hashPassword(password),
-        username: username
+        id: id
     });
 }
 
@@ -60,5 +72,16 @@ async function authenticate(username, password) {
 
     return dbUser;
 }
+async function checkUser(username) {
+    let dbUsers = await Db.query('SELECT * FROM users WHERE login = :user', {
+        user: username
+    });
+    if (dbUsers.length ===0) {
+        return 11;
+    }else{
+        let dbUser = dbUsers.pop();
+        return dbUser;
+    }
+}
 
-export {authorize, authenticate, hashPassword, setUserPassword, registration};
+export {authorize, authenticate, hashPassword, setUserPassword, registration,checkUser,authorizeUser};

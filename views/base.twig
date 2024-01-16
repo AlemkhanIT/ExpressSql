@@ -21,6 +21,7 @@
             {% if user %}
                 <div class="d-flex align-items-center">
                     <span class="px-2 ">{{ user.login }}</span> <a href="/user/logout" type="button" class="btn btn-dark">Odhlasit'</a>
+                    <a href="/user/changePass" type="button" class="btn btn-dark">Zmenit' Heslo'</a>
                 </div>
             {% else %}
                 <div class="d-flex">

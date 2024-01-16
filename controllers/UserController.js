@@ -1,5 +1,5 @@
 import express from "express";
-import {authenticate, authorize, registration, setUserPassword} from "../service/Security.js";
+import {authenticate, authorize, registration, setUserPassword,checkUser,authorizeUser} from "../service/Security.js";
 
 const router = express.Router();
 
@@ -43,12 +43,37 @@ router.get("/logout", function (req, res) {
 router.get('/registration', (req, res) => {
     res.render('registration.twig', {  });
 });
-router.post('/registration', function (req,res){
-    if(req.body.pass1 == req.body.pass2){
-        registration(req.body.username,req.body.pass1);
-        res.redirect('/user/login');
+router.get('/changePass', authorizeUser(), (req, res) => {
+    res.render('changePass.twig', {  });
+});
+router.post('/changePass',authorizeUser(),async (req,res)=>{
+    if(req.body.pass1.length>3&&req.body.pass1 == req.body.pass2){
+        await setUserPassword(req.session.user.id,req.body.pass1);
+        await req.flash("success","Heslo bole zmenene");
+        res.redirect('/user/changePass');
     }else{
-        req.flash('error',"Hesla musia byt' rovnake");
+        await req.flash('error',"Hesla musia byt' rovnake, heslo musi obsahovat' minimalne 4 znakov");
+        res.redirect('/user/changePass');
+    }
+})
+router.post('/registration', async function (req,res){
+    if(req.body.username.length>3&&req.body.pass1.length>3&&req.body.pass1 == req.body.pass2){
+        try {
+            const username = await checkUser(req.body.username);
+            if(username === 11){
+                registration(req.body.username,req.body.pass1);
+                res.redirect('/user/login');
+            }
+            else{
+                req.flash("error","Meno zaneprazdnene");
+                res.redirect("/user/registration");
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+        }
+    }else{
+        req.flash('error',"Hesla musia byt' rovnake, meno a heslo musi obsahovat' minimalne 4 znakov");
         res.redirect('/user/registration');
     }
 });

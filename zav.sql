@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Янв 16 2024 г., 17:41
+-- Время создания: Янв 16 2024 г., 19:55
 -- Версия сервера: 10.4.28-MariaDB
 -- Версия PHP: 8.2.4
 
@@ -35,6 +35,14 @@ CREATE TABLE `comments` (
   `author_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Дамп данных таблицы `comments`
+--
+
+INSERT INTO `comments` (`id`, `comment_text`, `created_at`, `post_id`, `author_id`) VALUES
+(32, 'Hello', '2024-01-16 18:24:50', 24, 8),
+(33, 'hi', '2024-01-16 18:24:58', 24, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -59,8 +67,10 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `title`, `description`, `text`, `address`, `created_at`, `author_id`, `region_id`, `date_konania`, `type`) VALUES
-(19, 'skuska Programmovanie', 'opis', 'nejaky text', 'Tojovskeho 40/T134', '2024-01-16 15:50:56', 1, 3, '2024-01-17', 'skuska'),
-(20, 'A. skuska', 'opis', 'text ', 'Nieco 20', '2024-01-16 15:51:44', 1, 7, '2024-01-19', 'skuska');
+(20, 'A. skuska', 'opis', 'text ', 'Nieco 20', '2024-01-16 15:51:44', 1, 7, '2024-01-19', 'skuska'),
+(23, 'skuska Prog', '', '', '', '2024-01-16 17:31:44', 1, 3, '2024-01-16', ''),
+(24, 'B. skuska ', 'opis', 'text', 'Tajovskeho 40', '2024-01-16 17:32:27', 1, 3, '2024-01-18', 'type'),
+(25, 'skuska TZI', 'opis', 'nijaka informacia', 'Tajovskeho 40', '2024-01-16 18:53:00', 1, 7, '2024-01-14', 'test');
 
 -- --------------------------------------------------------
 
@@ -109,7 +119,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `admin`) VALUES
-(1, 'admin', '7c4d9b6dd75bfa7cb49a19511c9eab65392cef889c28214b86bce028df65c9fe', 1);
+(1, 'admin', '761ccb9fbf5c354506efdb9231ed4a36e3a0f4c847f48d2521c85ba27d09eb3a', 1),
+(8, 'user', '83aa97ce93d77b748d3032a88456693643e9c635ecbbd529fed55bfb6ed1e6b3', NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -151,13 +162,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT для таблицы `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT для таблицы `regions`
@@ -169,7 +180,7 @@ ALTER TABLE `regions`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

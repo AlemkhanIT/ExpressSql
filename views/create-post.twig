@@ -5,6 +5,11 @@
         {% if user.admin %}
         <div class="row">
             <form action="/post/add" method="post" class="col">
+                {% for message in errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
                 <article>
                     <header class="mb-4">
                         <h1 class="fw-bolder mb-1">Title</h1>

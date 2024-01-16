@@ -36,10 +36,14 @@ router.get('/post/create', authorize(), async function (req, res)  {
         });
 });
 router.post('/post/add',authorize(),async function (req,res){
-    console.log(req.body.title,req.body.text,req.session.user.id)
-    await Posts.addPost(req.session.user.id, req.body.title,req.body.type,req.body.text,req.body.regionId,req.body.address,req.body.description,req.body.date_konania);
-    await req.flash('success', 'Post was created.');
-    res.redirect('/');
+    if(req.body.title==""||req.body.regionId==""||req.body.date_konania==""){
+        req.flash("error","Musite zaplnit' Title,datum konania, region");
+        res.redirect('/post/create');
+    }else{
+        await Posts.addPost(req.session.user.id, req.body.title,req.body.type,req.body.text,req.body.regionId,req.body.address,req.body.description,req.body.date_konania);
+        await req.flash('success', 'Post was created.');
+        res.redirect('/');
+    }
 })
 
 router.get("/post/:id", async function (req,res){
@@ -98,10 +102,15 @@ router.get('/post/:postId/deleteComment/:commentId', authorize(), async function
 });
 
 router.post('/post/update/:postId', authorize(),async function (req, res) {
-    console.log(req.body.title, req.body.type, req.body.text,req.body.region_id);
     try {
-        await Posts.updatePost(req.params.postId, req.body.title, req.body.type,req.body.text,req.body.regionId,req.body.address,req.body.description,req.body.date_konania);
-        res.redirect('/post/' + req.params.postId);
+        if(req.body.title==""||req.body.regionId==""||req.body.date_konania==""){
+            req.flash("error","Musite zaplnit' Title,datum konania, region");
+            res.redirect('/post/'+req.params.postId);
+        }
+        else{
+            await Posts.updatePost(req.params.postId, req.body.title, req.body.type,req.body.text,req.body.regionId,req.body.address,req.body.description,req.body.date_konania);
+            res.redirect('/post/' + req.params.postId);
+        }
     } catch (error) {
         console.error(error);
         res.redirect('/post/' + req.params.postId);
