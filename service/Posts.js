@@ -7,20 +7,29 @@ async function addPost(authorId, title, type, text,regionId,address,description,
         {authorId: authorId, title: title, type: type, text: text,regionId:regionId,address:address,description:description,date_konania:date_konania}
     );
 }
+async function updatePost(postId, title, type, text,regionId,address,description, date_konania) {
+    await Db.query(
+        'UPDATE posts SET title=:title, type=:type, text=:text, region_id=:regionId, address=:address, description=:description, date_konania=:date_konania WHERE id=:postId',
+        {postId: postId, title: title, type: type, text: text,regionId:regionId,address:address,description:description,date_konania:date_konania}
+    );
+}
 async function addComment(userId, postId, commentText) {
     await Db.query('INSERT INTO comments (author_id, post_id, comment_text, created_at) VALUES (?, ?, ?,now())',
         [userId, postId, commentText]);
 }
 async function findAllPosts() {
-    return Db.query('SELECT p.*, u.login, DATE_FORMAT(p.created_at, \'%d-%b-%Y\') as formatted_date FROM posts p LEFT JOIN users u ON p.author_id = u.id  ORDER BY p.created_at DESC');
+    return Db.query('SELECT p.*, u.login, DATE_FORMAT(p.created_at, \'%d.%m.%Y\') as formatted_date, DATE_FORMAT(p.date_konania, \'%d.%m.%Y\') as formatted_konania, r.city FROM posts p LEFT JOIN users u ON p.author_id = u.id LEFT JOIN regions r ON p.region_id = r.id ORDER BY p.created_at DESC');
+}
+async function findUserPosts() {
+    return Db.query('SELECT p.*, u.login, DATE_FORMAT(p.created_at, \'%d.%m.%Y\') as formatted_date, DATE_FORMAT(p.date_konania, \'%d.%m.%Y\') as formatted_konania,r.city FROM posts p LEFT JOIN users u ON p.author_id = u.id LEFT JOIN regions r ON p.region_id = r.id WHERE p.date_konania >= CURDATE()  ORDER BY p.created_at DESC ');
 }
 async function findPost(id) {
     return Db.query(
-        'SELECT p.*, u.login, r.city,DATE_FORMAT(p.date_konania, \'%d-%b-%Y\') as formatted_date  FROM posts p LEFT JOIN users u ON p.author_id = u.id LEFT JOIN regions r ON p.region_id = r.id WHERE p.id = ?',
+        'SELECT p.*, u.login, r.city,DATE_FORMAT(p.date_konania, \'%d.%m.%Y\') as formatted_date  FROM posts p LEFT JOIN users u ON p.author_id = u.id LEFT JOIN regions r ON p.region_id = r.id WHERE p.id = ?',
         [id]);
 }
 async function findAllComments(id) {
-    return Db.query('SELECT c.*,c.id as cId, p.id, DATE_FORMAT(c.created_at, \'%d-%b-%Y\') as formatted_date, u.login as username FROM comments c LEFT JOIN posts p ON p.id = c.post_id LEFT JOIN users u ON c.author_id = u.id  WHERE p.id = ?',
+    return Db.query('SELECT c.*,c.id as cId, p.id, DATE_FORMAT(c.created_at, \'%d.%m.%Y\') as formatted_date, u.login as username FROM comments c LEFT JOIN posts p ON p.id = c.post_id LEFT JOIN users u ON c.author_id = u.id  WHERE p.id = ?',
         [id]);
 }
 async function findPostOfComment(id) {
@@ -46,4 +55,4 @@ async function deleteComment(commentId) {
     );
 }
 
-export {findAllPosts, findPost,findAllComments, findRegions,deletePost,deleteComment,findPostOfComment,addPost,addComment}
+export {findAllPosts, findPost,findAllComments, findRegions,deletePost,deleteComment,findPostOfComment,addPost,addComment,findUserPosts,updatePost}

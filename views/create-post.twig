@@ -26,11 +26,13 @@
                             <div class="row">
                                 <div class="col">
                                     <ul class="list-unstyled mb-0">
-                                        <li>Mesto: <select name="region_id" class="form-select" aria-label="Default select example">
+                                        <li>Mesto:
+                                            <select name="regionId" class="form-select">
                                                 {% for region in regions %}
                                                     <option value="{{ region.id }}">{{ region.city }}</option>
                                                 {% endfor %}
-                                            </select></li>
+                                            </select>
+                                        </li>
                                         <li>Adresa: <input class="form-control" type="text" name="address" value=""></li>
                                         <li>Datum Konania: <input class="form-control" type="date" name="date_konania" value=""></li>
                                     </ul>

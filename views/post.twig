@@ -4,13 +4,13 @@
     <div class="container mt-5 mb-10">
         {% if user.admin %}
         <div class="row">
-            <form action="/post/update/{{ post.id }}" class="col">
+            <form method="post" action="/post/update/{{ post.id }}" class="col">
                 <article>
                     <header class="mb-4">
                         <h1 class="fw-bolder mb-1">Title</h1>
                         <input class="fs-1 form-control" type="text" name="title" value="{{ post.title }}">
                         <p class="fs-5 mb-4">Type</p>
-                        <input class="fs-5 form-control" type="text" name="title" value="{{ post.type }}">
+                        <input class="fs-5 form-control" type="text" name="type" value="{{ post.type }}">
                     </header>
 
                     <!-- Post content-->
@@ -26,13 +26,19 @@
                             <div class="row">
                                 <div class="col">
                                     <ul class="list-unstyled mb-0">
-                                        <li>Mesto: <select class="form-select" aria-label="Default select example">
+                                        <li>Mesto:
+                                            <select name="regionId" class="form-select" aria-label="Default select example">
                                                 {% for region in regions %}
-                                                    <option value="{{ region.id }}">{{ region.city }}</option>
+                                                    {% if region.id == post.region_id %}
+                                                        <option value="{{ region.id }}" selected>{{ region.city }}</option>
+                                                    {% else %}
+                                                        <option value="{{ region.id }}">{{ region.city }}</option>
+                                                        {% endif %}
                                                 {% endfor %}
-                                            </select></li>
+                                            </select>
+                                        </li>
                                         <li>Adresa: <input class="form-control" type="text" name="address" value="{{ post.address }}"></li>
-                                        <li>Datum Konania: <input class="form-control" type="date" name="date_konania" value="{{post.date | date('YYYY-MM-DD')}}"></li>
+                                        <li>Datum Konania: <input class="form-control" type="date" name="date_konania" value="{{post.date_konania | date('YYYY-MM-DD')}}"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -53,11 +59,10 @@
                 <article>
                     <header class="mb-4">
                         <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
-                        <div class="text-muted fst-italic mb-2">{{ post.created_at }} by {{ post.login }}</div>
+                        <div class="text-muted fst-italic mb-2">Posted at {{ post.formatted_date }} by {{ post.login }}</div>
                         <span class="badge bg-secondary text-decoration-none link-light">{{ post.type }}</span>
                     </header>
 
-                    <!-- Post content-->
                     <section class="mb-5">
                         <p class="fs-5 mb-4 overflow-wrap-break-word">{{ post.text }}</p>
                     </section>

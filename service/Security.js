@@ -26,9 +26,15 @@ function hashPassword(password) {
     return sha256(process.env.PWD_SALT + password).toString(hex);
 }
 
-
 async function setUserPassword(username, password) {
     await Db.query('UPDATE users SET password = :pwd WHERE login = :username', {
+        pwd: hashPassword(password),
+        username: username
+    });
+}
+
+async function registration(username, password) {
+    await Db.query('INSERT INTO users (login,password) VALUES (:username,:pwd)', {
         pwd: hashPassword(password),
         username: username
     });
@@ -55,4 +61,4 @@ async function authenticate(username, password) {
     return dbUser;
 }
 
-export {authorize, authenticate, hashPassword, setUserPassword};
+export {authorize, authenticate, hashPassword, setUserPassword, registration};

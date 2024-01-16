@@ -1,5 +1,5 @@
 import express from "express";
-import {authenticate, authorize, setUserPassword} from "../service/Security.js";
+import {authenticate, authorize, registration, setUserPassword} from "../service/Security.js";
 
 const router = express.Router();
 
@@ -42,6 +42,15 @@ router.get("/logout", function (req, res) {
 
 router.get('/registration', (req, res) => {
     res.render('registration.twig', {  });
+});
+router.post('/registration', function (req,res){
+    if(req.body.pass1 == req.body.pass2){
+        registration(req.body.username,req.body.pass1);
+        res.redirect('/user/login');
+    }else{
+        req.flash('error',"Hesla musia byt' rovnake");
+        res.redirect('/user/registration');
+    }
 });
 
 export {router as UserController}

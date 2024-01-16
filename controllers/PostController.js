@@ -7,7 +7,18 @@ import {findPostOfComment} from "../service/Posts.js";
 const router = express.Router();
 
 router.get('/', async function (req, res)  {
-    let posts = await Posts.findAllPosts();
+    let posts;
+    const user = req.session.user;
+    if(user){
+        if (user.admin){
+            posts = await Posts.findAllPosts();
+        }
+        else{
+            posts = await Posts.findUserPosts();
+        }
+    }else{
+        posts = await Posts.findUserPosts();
+    }
     if (!req.cookies.postRatings) {
         res.cookie('postRatings', [], {maxAge: 1000 * 3600 * 24 * 365, httpOnly: true, sameSite: "strict"});
     }
@@ -23,7 +34,6 @@ router.get('/post/create', authorize(), async function (req, res)  {
             user:req.session.user,
             regions: regions
         });
-
 });
 router.post('/post/add',authorize(),async function (req,res){
     console.log(req.body.title,req.body.text,req.session.user.id)
@@ -61,7 +71,6 @@ router.post('/post/comment/:postId', async function (req, res) {
     try {
         let userId = null; // Default to null
 
-        // Check if req.session.user exists and set userId accordingly
         if (req.session && req.session.user) {
             userId = req.session.user.id;
         }
@@ -85,6 +94,17 @@ router.get('/post/:postId/deleteComment/:commentId', authorize(), async function
     } catch (error) {
         console.error(error);
         res.redirect('/post/' + postId);
+    }
+});
+
+router.post('/post/update/:postId', authorize(),async function (req, res) {
+    console.log(req.body.title, req.body.type, req.body.text,req.body.region_id);
+    try {
+        await Posts.updatePost(req.params.postId, req.body.title, req.body.type,req.body.text,req.body.regionId,req.body.address,req.body.description,req.body.date_konania);
+        res.redirect('/post/' + req.params.postId);
+    } catch (error) {
+        console.error(error);
+        res.redirect('/post/' + req.params.postId);
     }
 });
 

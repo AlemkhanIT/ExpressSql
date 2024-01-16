@@ -19,22 +19,27 @@
                     <div class="col-lg-6 text-lg-right">
                         <div class="dropdown bootstrap-select form-control form-control-lg bg-white bg-op-9 ml-auto text-sm w-lg-50" style="width: 100%;">
                             <h2>Filter By</h2>
-                            <select class="form-control form-control-lg bg-white bg-op-9 ml-auto text-sm w-lg-50" data-toggle="select" tabindex="-98">
-                                <option> Date </option>
-                                <option> Region </option>
-                                <option> Name </option>
+                            <select id="sortCriteria" onchange="sortPosts()" class="form-control form-control-lg bg-white bg-op-9 ml-auto text-sm w-lg-50">
+                                <option value="date"> Date </option>
+                                <option value="region"> Region </option>
+                                <option value="name"> Name </option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div>
+                <div id="postsContainer">
                     {% for post in posts %}
-                    <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                    <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0 post"
+                         data-title="{{ post.title }}"
+                         data-datekonania="{{ post.date_konania }}"
+                         data-region="{{ post.city }}">
                         <div class="row align-items-center">
                             <div class="mb-3 mb-sm-0">
                                 <h5>
-                                    <a href="/post/{{ post.id }}" class="text-primary">{{ post.title }}</a>
+                                    <a href="/post/{{ post.id }}" class="text-primary">{{ post.title }} </a>
                                 </h5>
+                                <p class="fs-5">Datum Konania: {{ post.formatted_konania }}</p>
+                                <p>Region: {{ post.city }}</p>
                                 <p class="text-md">{{ post.description }}</p>
                                 <p class="text-sm"><span class="op-6">Posted</span> at {{ post.formatted_date }} <span class="op-6"> by</span> {{ post.login }}</p>
                                 <div class="text-sm op-5"> #{{ post.type}} </div>
@@ -70,4 +75,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
