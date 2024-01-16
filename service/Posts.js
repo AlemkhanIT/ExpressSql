@@ -35,7 +35,6 @@ async function findAllComments(id) {
 async function findPostOfComment(id) {
     console.log(Db.query('SELECT post_id FROM comments WHERE id = ?',
         [id]))
-    //return Db.query('SELECT post_id FROM comments  WHERE id = ?', [id]);
 }
 async function findRegions(){
     return Db.query('SELECT * FROM regions;');
@@ -45,7 +44,7 @@ async function deletePost(postId) {
         await Db.query('DELETE FROM comments WHERE post_id = :postId', { postId: postId });
         await Db.query('DELETE FROM posts WHERE id = :postId', { postId: postId });
     } catch (error) {
-        throw error; // Re-throw the error for further handling
+        throw error;
     }
 }
 async function deleteComment(commentId) {

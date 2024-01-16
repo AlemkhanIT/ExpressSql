@@ -37,7 +37,7 @@ router.get('/post/create', authorize(), async function (req, res)  {
 });
 router.post('/post/add',authorize(),async function (req,res){
     console.log(req.body.title,req.body.text,req.session.user.id)
-    await Posts.addPost(req.session.user.id, req.body.title,req.body.type,req.body.text,req.body.region_id,req.body.address,req.body.description,req.body.date_konania);
+    await Posts.addPost(req.session.user.id, req.body.title,req.body.type,req.body.text,req.body.regionId,req.body.address,req.body.description,req.body.date_konania);
     await req.flash('success', 'Post was created.');
     res.redirect('/');
 })

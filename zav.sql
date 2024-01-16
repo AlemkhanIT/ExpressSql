@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Дек 27 2023 г., 19:48
+-- Время создания: Янв 16 2024 г., 17:41
 -- Версия сервера: 10.4.28-MariaDB
 -- Версия PHP: 8.2.4
 
@@ -35,15 +35,6 @@ CREATE TABLE `comments` (
   `author_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Дамп данных таблицы `comments`
---
-
-INSERT INTO `comments` (`id`, `comment_text`, `created_at`, `post_id`, `author_id`) VALUES
-(18, 'asasdasd', '2023-12-27 03:33:20', 4, NULL),
-(19, 'asdasd', '2023-12-27 03:33:23', 4, NULL),
-(23, 'asd', '2023-12-27 04:53:14', 6, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -68,9 +59,8 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `title`, `description`, `text`, `address`, `created_at`, `author_id`, `region_id`, `date_konania`, `type`) VALUES
-(4, 'asdasd', 'asdasdasdasdasdasdasdasdasdasasdaasdasdasdasdasdasdasdasdasdasasdaasdasdasdasdasdasdasdasdasdasasdaasdasdasdasdasdasdasdasdasdasasdaasdasdasdasdasdasdasdasdasdasasdaasdasdasdasdasdasdasdasdasdasasdaasdasdasdasdasdasdasdasdasdasasdaasdasdasdasdasdasdasdasd', 'asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdaasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda', 'asdasdasdasdasdasd', '2023-12-08 20:32:35', 1, 1, '2023-12-10', 'Name'),
-(5, 'asdasd', 'asdasdasd', 'asdasdasd', 'asdasdasdasd', '2023-12-08 20:33:45', 1, 1, '2023-12-08', NULL),
-(6, 'asdasd', 'asdasd', 'asdasd', 'asdasd', '2023-12-08 20:34:03', 1, 1, '2023-12-08', NULL);
+(19, 'skuska Programmovanie', 'opis', 'nejaky text', 'Tojovskeho 40/T134', '2024-01-16 15:50:56', 1, 3, '2024-01-17', 'skuska'),
+(20, 'A. skuska', 'opis', 'text ', 'Nieco 20', '2024-01-16 15:51:44', 1, 7, '2024-01-19', 'skuska');
 
 -- --------------------------------------------------------
 
@@ -88,7 +78,18 @@ CREATE TABLE `regions` (
 --
 
 INSERT INTO `regions` (`id`, `city`) VALUES
-(1, 'BB');
+(3, 'Bratislava'),
+(4, 'Košice'),
+(5, 'Prešov'),
+(6, 'Žilina'),
+(7, 'Banská Bystrica'),
+(8, 'Nitra'),
+(9, 'Trnava'),
+(10, 'Trenčín'),
+(11, 'Martin'),
+(12, 'Poprad'),
+(13, 'Prievidza'),
+(14, 'Zvolen');
 
 -- --------------------------------------------------------
 
@@ -108,8 +109,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `admin`) VALUES
-(1, 'admin', '7c4d9b6dd75bfa7cb49a19511c9eab65392cef889c28214b86bce028df65c9fe', 1),
-(2, 'user', '7c4d9b6dd75bfa7cb49a19511c9eab65392cef889c28214b86bce028df65c9fe', 0);
+(1, 'admin', '7c4d9b6dd75bfa7cb49a19511c9eab65392cef889c28214b86bce028df65c9fe', 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -151,25 +151,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT для таблицы `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT для таблицы `regions`
 --
 ALTER TABLE `regions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
