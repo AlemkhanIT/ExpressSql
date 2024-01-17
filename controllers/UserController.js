@@ -28,7 +28,7 @@ router.post('/check', function (req,res){
     })
 });
 
-router.get("/logout", function (req, res) {
+router.get("/logout", authorizeUser(), function (req, res) {
     let sessionName = req.session.name;
     req.session.destroy(async function(err) {
         if (err) {

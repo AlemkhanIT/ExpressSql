@@ -32,10 +32,7 @@ async function findAllComments(id) {
     return Db.query('SELECT c.*,c.id as cId, p.id, DATE_FORMAT(c.created_at, \'%d.%m.%Y\') as formatted_date, u.login as username FROM comments c LEFT JOIN posts p ON p.id = c.post_id LEFT JOIN users u ON c.author_id = u.id  WHERE p.id = ?',
         [id]);
 }
-async function findPostOfComment(id) {
-    console.log(Db.query('SELECT post_id FROM comments WHERE id = ?',
-        [id]))
-}
+
 async function findRegions(){
     return Db.query('SELECT * FROM regions;');
 }
@@ -54,4 +51,4 @@ async function deleteComment(commentId) {
     );
 }
 
-export {findAllPosts, findPost,findAllComments, findRegions,deletePost,deleteComment,findPostOfComment,addPost,addComment,findUserPosts,updatePost}
+export {findAllPosts, findPost,findAllComments, findRegions,deletePost,deleteComment,addPost,addComment,findUserPosts,updatePost}

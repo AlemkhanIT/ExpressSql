@@ -1,7 +1,6 @@
 import express from "express";
 import * as Posts from "../service/Posts.js"
 import {authorize} from "../service/Security.js";
-import {findPostOfComment} from "../service/Posts.js";
 
 
 const router = express.Router();

@@ -34,7 +34,6 @@ function authorizeUser() {
 
 
 function hashPassword(password) {
-    // pripojit pred heslo retazec SALT, vypocitat hash algoritmom sha256 a skonvertovat ho na hex retazec.
     return sha256(process.env.PWD_SALT + password).toString(hex);
 }
 
