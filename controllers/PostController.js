@@ -6,36 +6,15 @@ import {findPostOfComment} from "../service/Posts.js";
 
 const router = express.Router();
 
-router.get('/', async function (req, res)  {
-    let posts;
-    const user = req.session.user;
-    if(user){
-        if (user.admin){
-            posts = await Posts.findAllPosts();
-        }
-        else{
-            posts = await Posts.findUserPosts();
-        }
-    }else{
-        posts = await Posts.findUserPosts();
-    }
-    if (!req.cookies.postRatings) {
-        res.cookie('postRatings', [], {maxAge: 1000 * 3600 * 24 * 365, httpOnly: true, sameSite: "strict"});
-    }
-    res.render('forum.twig', {
-        posts: posts,
-        user:req.session.user
-    });
-});
 
-router.get('/post/create', authorize(), async function (req, res)  {
+router.get('/create', authorize(), async function (req, res)  {
         let regions = await Posts.findRegions();
         res.render('create-post.twig', {
             user:req.session.user,
             regions: regions
         });
 });
-router.post('/post/add',authorize(),async function (req,res){
+router.post('/add',authorize(),async function (req,res){
     if(req.body.title==""||req.body.regionId==""||req.body.date_konania==""){
         req.flash("error","Musite zaplnit' Title,datum konania, region");
         res.redirect('/post/create');
@@ -46,7 +25,7 @@ router.post('/post/add',authorize(),async function (req,res){
     }
 })
 
-router.get("/post/:id", async function (req,res){
+router.get("/:id", async function (req,res){
     let post = await Posts.findPost(req.params.id);
     let comments = await Posts.findAllComments(req.params.id);
     let regions = await Posts.findRegions();
@@ -64,14 +43,14 @@ router.get("/post/:id", async function (req,res){
     }
 });
 
-router.get('/post/delete/:postId', authorize(), async function (req, res) {
+router.get('/delete/:postId', authorize(), async function (req, res) {
     await Posts.deletePost(req.params.postId);
     await req.flash('success', 'Príspevok bol vymazaný.')
 
     res.redirect('/');
 });
 
-router.post('/post/comment/:postId', async function (req, res) {
+router.post('/comment/:postId', async function (req, res) {
     try {
         let userId = null; // Default to null
 
@@ -88,7 +67,7 @@ router.post('/post/comment/:postId', async function (req, res) {
     }
 });
 
-router.get('/post/:postId/deleteComment/:commentId', authorize(), async function (req, res) {
+router.get('/:postId/deleteComment/:commentId', authorize(), async function (req, res) {
     try {
         const postId = req.params.postId;
         const commentId = req.params.commentId;
@@ -101,7 +80,7 @@ router.get('/post/:postId/deleteComment/:commentId', authorize(), async function
     }
 });
 
-router.post('/post/update/:postId', authorize(),async function (req, res) {
+router.post('/update/:postId', authorize(),async function (req, res) {
     try {
         if(req.body.title==""||req.body.regionId==""||req.body.date_konania==""){
             req.flash("error","Musite zaplnit' Title,datum konania, region");

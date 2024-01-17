@@ -1,6 +1,7 @@
 import * as Posts from "./service/Posts.js"
 import dotenv  from "dotenv";
 import express from "express";
+import {IndexController} from "./controllers/IndexController.js";
 import {PostContoller} from "./controllers/PostController.js";
 import {UserController} from "./controllers/UserController.js";
 import sessions from "express-session";
@@ -27,19 +28,17 @@ app.use(sessions({
         SameSite: 'None',
     },
     resave: false,
-    //store:  new (FileStore(sessions))({ // ukladanie session dat do suboru (nefunguje dobre vo Windows)
-    //     path: 'sessions'
-    //}),
-    store: new MemoryStore({  // ukladanie session dat do pamate (nevhodne pre produkcnu prevadzku)
+    store: new MemoryStore({
         checkPeriod: 3600000
     }),
 }));
 app.use(flash());
 let nunjucksEnv = initNunjucksEnv(app);
 app.use(cookieParser());
-app.use("/", PostContoller);
+app.use("/", IndexController);
+app.use("/post", PostContoller);
 app.use("/user", UserController);
-// Start the server
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
